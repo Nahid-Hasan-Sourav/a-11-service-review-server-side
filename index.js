@@ -40,7 +40,7 @@ async function run(){
         const cursor=serviceCollection.find(query);
         const services= await cursor.toArray();
         res.send(services);
-        console.log(services);
+        // console.log(services);
        })
        app.get('/services/:id', async(req, res)=>{
         const id=req.params.id;
@@ -51,12 +51,42 @@ async function run(){
         console.log(services);
        })
 
-    //    Review api
-
+    //  Insert data using post.Insert Review api.
     app.post('/review',async(req,res)=>{
         const review=req.body;
         const result= await reviewCollection.insertOne(review);
         res.send(result)
+    })
+    app.get('/review',async(req,res)=>{
+        let query={}
+        console.log(req.query)
+        if(req.query.serVicesId){
+            query={
+                
+                serVicesId:req.query.serVicesId
+            }
+        }    
+        var mysort = {time: -1};  
+        const cursor=reviewCollection.find(query).sort(mysort);   
+        const reviews= await cursor.toArray();
+        res.send(reviews);
+        
+    })
+    app.get('/my-review',async(req,res)=>{
+        let query={}
+        console.log(req.query)
+        if(req.query.userEmail){
+            query={
+                
+                userEmail:req.query.userEmail
+
+            }
+        }    
+        var mysort = {time: -1};  
+        const cursor=reviewCollection.find(query).sort(mysort);   
+        const reviews= await cursor.toArray();
+        res.send(reviews);
+        
     })
 
     }
