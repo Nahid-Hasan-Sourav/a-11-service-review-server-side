@@ -50,6 +50,15 @@ async function run(){
         res.send(services);
         console.log(services);
        })
+    //    this is for update 
+       app.get('/review/:id', async(req, res)=>{
+        const id=req.params.id;
+        const query={ _id: ObjectId(id)}
+        // const cursor=serviceCollection.find(query);
+        const review= await reviewCollection.findOne(query);
+        res.send(review);
+        console.log(review);
+       })
 
     //  Insert data using post.Insert Review api.
     app.post('/review',async(req,res)=>{
