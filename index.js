@@ -50,7 +50,7 @@ async function run(){
         res.send(services);
         console.log(services);
        })
-    //    this is for update 
+    //    this is for update get the review
        app.get('/review/:id', async(req, res)=>{
         const id=req.params.id;
         const query={ _id: ObjectId(id)}
@@ -60,12 +60,29 @@ async function run(){
         console.log(review);
        })
 
+    //    this is for update review
+       app.patch('/REVIEW/:id', async (req, res) => {
+        const id = req.params.id;
+        const filter = { _id: ObjectId(id) };
+        const review = req.body;
+        const option = {upsert: true};
+        const updatedReview = {
+            $set: {
+                reviewText: review.reviewText
+                
+            }
+        }
+        const result = await reviewCollection.updateOne(filter, updatedReview, option);
+        res.send(result);
+    })
+
     //  Insert data using post.Insert Review api.
     app.post('/review',async(req,res)=>{
         const review=req.body;
         const result= await reviewCollection.insertOne(review);
         res.send(result)
     })
+
     app.delete('/review/:id',async(req,res)=>{
         const id=req.params.id;
         const query={_id:ObjectId(id)};
